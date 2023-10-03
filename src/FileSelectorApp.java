@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.DocumentBuilder;
@@ -13,12 +15,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.*;
 
 public class FileSelectorApp {
+    static Map<String, Nodo> nodosMap = new HashMap<>();
     private JFrame frame;
     private JButton openButton;
+    private JButton Mostrar_Mapa;
     private File selectedFile1;
     private File selectedFile2;
     private ArrayList<Edge> listaEdge = new ArrayList<>();
     private ArrayList<Nodo> listaNodo = new ArrayList<>();
+    private JPanel contentPane;
 
     public FileSelectorApp() {
         frame = new JFrame("Seleccionar 2 archivos XML");
@@ -33,11 +38,41 @@ public class FileSelectorApp {
         openButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 openXMLFiles();
-                dibujar();
+
             }
         });
+        Mostrar_Mapa = new JButton("Mostrar Mapa");
+        frame.add(Mostrar_Mapa);
+        Mostrar_Mapa.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Map<String, Nodo> nodosMap = crearDiccionarioNodos(listaNodo);
+                for (Edge edge : listaEdge) {
+                    Nodo nodoFuente = nodosMap.get(edge.getU());
+                    Nodo nodoDestino = nodosMap.get(edge.getV());
+                    edge.setNodoFuente(nodoFuente);
+                    edge.setNodoDestino(nodoDestino);
+                }
+                Graficar panel = new Graficar(listaNodo, listaEdge);
 
+                // Crear un JScrollPane que contenga el panel App
+                JScrollPane scrollPane = new JScrollPane(panel);
+
+                // Configurar el comportamiento de las barras de desplazamiento
+                scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+                scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+                // Crear el JFrame y configurarlo
+                JFrame frame = new JFrame("Dibujar Mapa");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(800, 600);
+
+                // Agregar el JScrollPane al contenido del JFrame
+                frame.getContentPane().add(scrollPane);
+                frame.setVisible(true);
+            }
+        });
         frame.setVisible(true);
+
     }
 
     private void openXMLFiles() {
@@ -83,12 +118,15 @@ public class FileSelectorApp {
                 if (edgeNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element edgeElement = (Element) edgeNode;
                     try {
-                        int u = Integer.parseInt(edgeElement.getElementsByTagName("u").item(0).getTextContent());
-                        int v = Integer.parseInt(edgeElement.getElementsByTagName("v").item(0).getTextContent());
-                        int osmid = Integer
-                                .parseInt(edgeElement.getElementsByTagName("osmid").item(0).getTextContent());
+                        String u = (edgeElement.getElementsByTagName("u").item(0).getTextContent());
+                        String v = (edgeElement.getElementsByTagName("v").item(0).getTextContent());
+                        String osmid = (edgeElement.getElementsByTagName("osmid").item(0).getTextContent());
                         String name = edgeElement.getElementsByTagName("name").item(0).getTextContent();
-                        Edge e = new Edge(u, v, osmid, name);
+                        int k = Integer.parseInt(edgeElement.getElementsByTagName("k").item(0).getTextContent());
+                        Nodo nodoFuente = nodosMap.get(u);
+                        Nodo nodoDestino = nodosMap.get(v);
+                        Edge e = new Edge(u, v, k, osmid, name, nodoFuente, nodoDestino);
+
                         listaEdge.add(e);
                     } catch (NumberFormatException e) {
 
@@ -104,7 +142,7 @@ public class FileSelectorApp {
                 if (rowNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element rowElement = (Element) rowNode;
                     try {
-                        int osmid = Integer.parseInt(rowElement.getElementsByTagName("osmid").item(0).getTextContent());
+                        String osmid = (rowElement.getElementsByTagName("osmid").item(0).getTextContent());
                         double x = Double.parseDouble(rowElement.getElementsByTagName("x").item(0).getTextContent());
                         double y = Double.parseDouble(rowElement.getElementsByTagName("y").item(0).getTextContent());
                         int streetCount = Integer
@@ -125,45 +163,11 @@ public class FileSelectorApp {
         }
     }
 
-    private void dibujar() {
-        ArrayList<PointDouble> coordenadas = new ArrayList<>();
-        try {
-            for (int i = 0; i < listaNodo.size(); i++) {
-                double x = listaNodo.get(i).getX();
-                double y = listaNodo.get(i).getY();
-                System.out.println(x);
-                PointDouble p = new PointDouble(x, y);
-                coordenadas.add(p);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    private static Map<String, Nodo> crearDiccionarioNodos(ArrayList<Nodo> nodos) {
+        Map<String, Nodo> nodosMap = new HashMap<>();
+        for (Nodo nodo : nodos) {
+            nodosMap.put(nodo.getId(), nodo);
         }
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Mapa");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.add(new JPanel() {
-                @Override
-                protected void paintComponent(Graphics g) {
-                    super.paintComponent(g);
-                    PointDouble puntoAnterior = null;
-                    g.setColor(Color.RED);
-
-                    for (PointDouble punto : coordenadas) {
-                        int x = (int) punto.getX(); // Convierte double a int
-                        int y = (int) punto.getY(); // Convierte double a int
-
-                        g.fillOval(-1 * x, -1 * y, 5, 5);
-                        if (puntoAnterior != null) {
-                            g.drawLine((int) puntoAnterior.getX(), (int) puntoAnterior.getY(), x, y);
-                        }
-                        puntoAnterior = punto;
-                    }
-
-                }
-            });
-            frame.setSize(800, 600);
-            frame.setVisible(true);
-        });
-
+        return nodosMap;
     }
 }
