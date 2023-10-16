@@ -19,6 +19,8 @@ public class Graficar extends JPanel {
     private int panY;
     private boolean panning = false;
     private Nodo nodoMarcado = null;
+    private Nodo nodoSeleccionado1 = null;
+    private Nodo nodoSeleccionado2 = null;
 
     public Graficar(List<Nodo> nodos, List<Edge> edges) {
         this.nodos = nodos;
@@ -33,9 +35,13 @@ public class Graficar extends JPanel {
                     // Buscar el nodo más cercano al punto de clic
                     nodoMarcado = encontrarNodoMasCercano(e.getX(), e.getY());
 
-                    // Marcar el nodo si se encontró uno
                     if (nodoMarcado != null) {
                         nodoMarcado.setMarcado(true);
+                        if (nodoSeleccionado1 == null) {
+                            nodoSeleccionado1 = nodoMarcado;
+                        } else if (nodoSeleccionado2 == null) {
+                            nodoSeleccionado2 = nodoMarcado;
+                        }
                     }
                     repaint();
                 }
@@ -138,7 +144,7 @@ public class Graficar extends JPanel {
                 x2 = (int) (x2 * zoom);
                 y2 = (int) (y2 * zoom);
 
-                g2d.setColor(Color.red);
+                g2d.setColor(Color.BLACK);
                 g2d.drawLine(x1, y1, x2, y2);
                 g2d.setColor(Color.black);
             }
@@ -147,6 +153,24 @@ public class Graficar extends JPanel {
         for (Nodo nodo : nodos) {
             nodo.dibujar(g2d, getWidth(), getHeight(), zoom);
         }
+        // Dibujar la línea entre los nodos seleccionados
+        if (nodoSeleccionado1 != null && nodoSeleccionado2 != null) {
+            /*
+             * int x1 = calcularX(nodoSeleccionado1);
+             * int y1 = calcularY(nodoSeleccionado1);
+             * int x2 = calcularX(nodoSeleccionado2);
+             * int y2 = calcularY(nodoSeleccionado2);
+             */
+            int x1 = escalar(nodoSeleccionado1.getX(), -71.7, -71.1, 0, getWidth(), zoom);
+            int y1 = escalar(nodoSeleccionado1.getY(), -30.5, -29.9, 0, getHeight(), zoom);
+            int x2 = escalar(nodoSeleccionado2.getX(), -71.7, -71.1, 0, getWidth(), zoom);
+            int y2 = escalar(nodoSeleccionado2.getY(), -30.5, -29.9, 0, getHeight(), zoom);
+
+            g2d.setColor(Color.RED); // Color de la línea
+            g2d.drawLine(x1, y1, x2, y2);
+            g2d.setColor(Color.RED); // Restablecer el color
+        }
+
     }
 
     // Agregar un método para encontrar el nodo más cercano
@@ -173,6 +197,12 @@ public class Graficar extends JPanel {
         // System.out.println(nodoMasCercano);
 
         return null;
+    }
+
+    private int escalar(double valor, double rangoMinEntrada, double rangoMaxEntrada, int rangoMinSalida,
+            int rangoMaxSalida, double zoom) {
+        return (int) ((((valor - rangoMinEntrada) * (rangoMaxSalida - rangoMinSalida))
+                / (rangoMaxEntrada - rangoMinEntrada) + rangoMinSalida) * zoom);
     }
 
 }
