@@ -7,7 +7,7 @@ public class Nodo {
     private double x;
     private int street_Count;
     private Color color = Color.RED;
-    private int tamañoOriginal = 4;
+    private int tamañoOriginal = 1;
     private boolean marcado = false;
 
     public Nodo(String osmid, double x, double y, int street_Count) {
@@ -86,7 +86,7 @@ public class Nodo {
         scaledX = (int) (scaledX * zoom);
         scaledY = (int) (scaledY * zoom);
         g.fillOval(scaledX - 1, scaledY - 1, tamañoOriginal, tamañoOriginal);
-        g.setColor(Color.black);
+        g.setColor(Color.BLACK);
     }
 
     private int escalarCoordenada(double valor, double rangoMinEntrada, double rangoMaxEntrada, int rangoMinSalida,

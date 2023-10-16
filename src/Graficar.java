@@ -72,20 +72,35 @@ public class Graficar extends JPanel {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 int notches = e.getWheelRotation();
+                int zoomCenterX = e.getX(); // Obtenemos la posición X del ratón
+                int zoomCenterY = e.getY(); // Obtenemos la posición Y del ratón
+
                 if (notches < 0) {
                     // Zoom in
-                    setZoom(getZoom() * 1.1);
+                    setZoom(getZoom() * 1.1, zoomCenterX, zoomCenterY);
                 } else {
                     // Zoom out
-                    setZoom(getZoom() / 1.1);
+                    setZoom(getZoom() / 1.1, zoomCenterX, zoomCenterY);
                 }
+
                 repaint();
             }
         });
+
     }
 
-    public void setZoom(double zoom) {
-        this.zoom = zoom;
+    public void setZoom(double newZoom, int zoomCenterX, int zoomCenterY) {
+        // Calcular el desplazamiento de la posición del ratón después del zoom
+        double offsetX = (zoomCenterX - panX) / zoom;
+        double offsetY = (zoomCenterY - panY) / zoom;
+
+        // Actualizar el nivel de zoom
+        this.zoom = newZoom;
+
+        // Ajustar el desplazamiento según el nuevo nivel de zoom
+        panX = zoomCenterX - (int) (offsetX * newZoom);
+        panY = zoomCenterY - (int) (offsetY * newZoom);
+
         repaint();
     }
 
