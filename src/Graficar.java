@@ -155,12 +155,6 @@ public class Graficar extends JPanel {
         }
         // Dibujar la línea entre los nodos seleccionados
         if (nodoSeleccionado1 != null && nodoSeleccionado2 != null) {
-            /*
-             * int x1 = calcularX(nodoSeleccionado1);
-             * int y1 = calcularY(nodoSeleccionado1);
-             * int x2 = calcularX(nodoSeleccionado2);
-             * int y2 = calcularY(nodoSeleccionado2);
-             */
             int x1 = escalar(nodoSeleccionado1.getX(), -71.7, -71.1, 0, getWidth(), zoom);
             int y1 = escalar(nodoSeleccionado1.getY(), -30.5, -29.9, 0, getHeight(), zoom);
             int x2 = escalar(nodoSeleccionado2.getX(), -71.7, -71.1, 0, getWidth(), zoom);
