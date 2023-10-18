@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Graficar extends JPanel {
+    private JFrame distanciaFrame;
+    private JLabel distanciaLabel;
+    private JLabel labelNodoUno;
+    private JLabel labelNodoDos;
     private List<Nodo> nodos;
     private List<Edge> edges;
     private double zoom = 1.0;
@@ -23,6 +27,17 @@ public class Graficar extends JPanel {
     private Nodo nodoSeleccionado2 = null;
 
     public Graficar(List<Nodo> nodos, List<Edge> edges) {
+        distanciaFrame = new JFrame("Distancia entre Nodos");
+        distanciaFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        distanciaFrame.setSize(300, 125);
+        distanciaFrame.setLayout(new FlowLayout());
+        labelNodoUno = new JLabel("Osmid Nodo Uno: ");
+        labelNodoDos = new JLabel("Osmid Nodo Dos: ");
+        distanciaFrame.add(labelNodoUno);
+        distanciaFrame.add(labelNodoDos);
+        distanciaLabel = new JLabel("Distancia entre nodos: ");
+        distanciaFrame.add(distanciaLabel);
+        distanciaFrame.setVisible(false);
         this.nodos = nodos;
         this.edges = edges;
         addMouseListener(new MouseAdapter() {
@@ -41,6 +56,8 @@ public class Graficar extends JPanel {
                             nodoSeleccionado1 = nodoMarcado;
                         } else if (nodoSeleccionado2 == null) {
                             nodoSeleccionado2 = nodoMarcado;
+                            // Llama al método para actualizar la distancia en el JLabel
+                            actualizarDistanciaLabel();
                         }
                     }
                     repaint();
@@ -163,6 +180,7 @@ public class Graficar extends JPanel {
             g2d.setColor(Color.RED); // Color de la línea
             g2d.drawLine(x1, y1, x2, y2);
             g2d.setColor(Color.RED); // Restablecer el color
+
         }
 
     }
@@ -181,10 +199,17 @@ public class Graficar extends JPanel {
                     && escalarCoordenada(nodo.getY(), -30.5, -29.9, 0, getHeight()) - mouseY < 10
                     && escalarCoordenada(nodo.getX(), -71.7, -71.1, 0, getWidth()) - mouseX > 0
                     && escalarCoordenada(nodo.getY(), -30.5, -29.9, 0, getHeight()) - mouseY > 0) {
-                System.out.println(escalarCoordenada(nodo.getX(), -71.7, -71.1, 0, getWidth()) - mouseX);
-                System.out.println(escalarCoordenada(nodo.getY(), -30.5, -29.9, 0, getHeight()) - mouseY);
+                // System.out.println(escalarCoordenada(nodo.getX(), -71.7, -71.1, 0,
+                // getWidth()) - mouseX);
+                // System.out.println(escalarCoordenada(nodo.getY(), -30.5, -29.9, 0,
+                // getHeight()) - mouseY);
                 nodoMasCercano = nodo;
-                System.out.println(nodoMasCercano);
+                // System.out.println(nodoMasCercano);
+                /*
+                 * System.out.println("osmid: " + nodoMasCercano.getId());
+                 * System.out.println("X: " + nodoMasCercano.getX());
+                 * System.out.println("Y: " + nodoMasCercano.getY());
+                 */
                 return nodoMasCercano;
             }
         }
@@ -199,4 +224,49 @@ public class Graficar extends JPanel {
                 / (rangoMaxEntrada - rangoMinEntrada) + rangoMinSalida) * zoom);
     }
 
+    public static double calcularDistanciaHaversine(double latitudNodo1, double longitudNodo1,
+            double latitudNodo2, double longitudNodo2) {
+        double radioTierra = 6371; // Radio promedio de la Tierra en kilómetros
+
+        // Convierte las coordenadas de grados a radianes
+        double latitud1 = Math.toRadians(latitudNodo1);
+        double longitud1 = Math.toRadians(longitudNodo1);
+        double latitud2 = Math.toRadians(latitudNodo2);
+        double longitud2 = Math.toRadians(longitudNodo2);
+
+        // Calcula las diferencias en latitud y longitud
+        double dLatitud = latitud2 - latitud1;
+        double dLongitud = longitud2 - longitud1;
+
+        // Aplica la fórmula haversine
+        double a = Math.sin(dLatitud / 2) * Math.sin(dLatitud / 2) +
+                Math.cos(latitud1) * Math.cos(latitud2) *
+                        Math.sin(dLongitud / 2) * Math.sin(dLongitud / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // Calcula la distancia
+        double distancia = radioTierra * c;
+
+        return distancia;
+    }
+
+    public void actualizarDistanciaLabel() {
+        if (nodoSeleccionado1 != null && nodoSeleccionado2 != null) {
+            double latitudNodo1 = nodoSeleccionado1.getY();
+            double longitudNodo1 = nodoSeleccionado1.getX();
+            double latitudNodo2 = nodoSeleccionado2.getY();
+            double longitudNodo2 = nodoSeleccionado2.getX();
+
+            // Calcula la distancia en kilómetros
+            double distancia = calcularDistanciaHaversine(latitudNodo1, longitudNodo1, latitudNodo2, longitudNodo2);
+
+            // Actualiza el texto del JLabel con la distancia
+            labelNodoUno.setText("Osmid Nodo Uno: " + nodoSeleccionado1.getId());
+            labelNodoDos.setText("Osmid Nodo Dos: " + nodoSeleccionado2.getId());
+            distanciaLabel.setText("Distancia entre nodos: " + distancia + " km");
+
+            // Muestra el JFrame con el JLabel actualizado
+            distanciaFrame.setVisible(true);
+        }
+    }
 }

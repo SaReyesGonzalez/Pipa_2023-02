@@ -69,6 +69,7 @@ public class FileSelectorApp {
                 // Agregar el JScrollPane al contenido del JFrame
                 frame.getContentPane().add(scrollPane);
                 frame.setVisible(true);
+
             }
         });
         frame.setVisible(true);
