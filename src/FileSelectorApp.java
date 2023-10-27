@@ -24,6 +24,7 @@ public class FileSelectorApp {
     private ArrayList<Edge> listaEdge = new ArrayList<>();
     private ArrayList<Nodo> listaNodo = new ArrayList<>();
     private JPanel contentPane;
+    private double xv = 0, xv2 = 0, yv = 0, yv2 = 0;
 
     public FileSelectorApp() {
         frame = new JFrame("Seleccionar 2 archivos XML");
@@ -52,7 +53,7 @@ public class FileSelectorApp {
                     edge.setNodoFuente(nodoFuente);
                     edge.setNodoDestino(nodoDestino);
                 }
-                Graficar panel = new Graficar(listaNodo, listaEdge);
+                Graficar panel = new Graficar(listaNodo, listaEdge, xv, xv2, yv, yv2);
 
                 // Crear un JScrollPane que contenga el panel App
                 JScrollPane scrollPane = new JScrollPane(panel);
@@ -150,6 +151,32 @@ public class FileSelectorApp {
                                 .parseInt(rowElement.getElementsByTagName("street_count").item(0).getTextContent());
                         Nodo n = new Nodo(osmid, x, y, streetCount);
                         listaNodo.add(n);
+                        if (xv == 0) {
+                            xv = x;
+                        } else if (xv > x) {
+                            xv = x;
+                        }
+                        if (xv2 == 0) {
+                            xv2 = x;
+                        } else if (xv2 < x) {
+                            xv2 = x;
+                        }
+                        if (yv == 0) {
+                            yv = y;
+                        } else if (yv > y) {
+                            yv = y;
+                        }
+                        if (yv2 == 0) {
+                            yv2 = y;
+                        } else if (yv2 < y) {
+                            yv2 = y;
+                        }
+                        for (Nodo nodo : listaNodo) {
+                            nodo.setXv(xv);
+                            nodo.setXv2(xv2);
+                            nodo.setYv(yv);
+                            nodo.setYv2(yv2);
+                        }
                         // System.out.println("x: " + x);
                         // System.out.println("y: " + y);
                     } catch (NumberFormatException e) {

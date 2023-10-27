@@ -14,6 +14,10 @@ public class Graficar extends JPanel {
     private JLabel distanciaLabel;
     private JLabel labelNodoUno;
     private JLabel labelNodoDos;
+    private JLabel xNodoUno;
+    private JLabel yNodoUno;
+    private JLabel xNodoDos;
+    private JLabel yNodoDos;
     private List<Nodo> nodos;
     private List<Edge> edges;
     private double zoom = 1.0;
@@ -25,21 +29,34 @@ public class Graficar extends JPanel {
     private Nodo nodoMarcado = null;
     private Nodo nodoSeleccionado1 = null;
     private Nodo nodoSeleccionado2 = null;
+    private double xv, xv2, yv, yv2;
 
-    public Graficar(List<Nodo> nodos, List<Edge> edges) {
+    public Graficar(List<Nodo> nodos, List<Edge> edges, double xv, double xv2, double yv, double yv2) {
         distanciaFrame = new JFrame("Distancia entre Nodos");
         distanciaFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        distanciaFrame.setSize(300, 125);
+        distanciaFrame.setSize(300, 250);
         distanciaFrame.setLayout(new FlowLayout());
         labelNodoUno = new JLabel("Osmid Nodo Uno: ");
         labelNodoDos = new JLabel("Osmid Nodo Dos: ");
+        xNodoUno = new JLabel("Nodo Uno x:");
+        xNodoDos = new JLabel("Nodo Dos x:");
+        yNodoUno = new JLabel("Nodo Uno y:");
+        yNodoDos = new JLabel("Nodo Dos y:");
         distanciaFrame.add(labelNodoUno);
+        distanciaFrame.add(xNodoUno);
+        distanciaFrame.add(yNodoUno);
         distanciaFrame.add(labelNodoDos);
+        distanciaFrame.add(xNodoDos);
+        distanciaFrame.add(yNodoDos);
         distanciaLabel = new JLabel("Distancia entre nodos: ");
         distanciaFrame.add(distanciaLabel);
         distanciaFrame.setVisible(false);
         this.nodos = nodos;
         this.edges = edges;
+        this.xv = xv;
+        this.xv2 = xv2;
+        this.yv = yv;
+        this.yv2 = yv2;
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -151,10 +168,10 @@ public class Graficar extends JPanel {
             Nodo nodoFuente = edge.getNodoFuente();
             Nodo nodoDestino = edge.getNodoDestino();
             if (nodoFuente != null && nodoDestino != null) {
-                int x1 = escalarCoordenada(nodoFuente.getX(), -71.7, -71.1, 0, getWidth());
-                int y1 = escalarCoordenada(nodoFuente.getY(), -30.5, -29.9, 0, getHeight());
-                int x2 = escalarCoordenada(nodoDestino.getX(), -71.7, -71.1, 0, getWidth());
-                int y2 = escalarCoordenada(nodoDestino.getY(), -30.5, -29.9, 0, getHeight());
+                int x1 = escalarCoordenada(nodoFuente.getX(), xv, xv2, 0, getWidth());
+                int y1 = escalarCoordenada(nodoFuente.getY(), yv, yv2, 0, getHeight());
+                int x2 = escalarCoordenada(nodoDestino.getX(), xv, xv2, 0, getWidth());
+                int y2 = escalarCoordenada(nodoDestino.getY(), yv, yv2, 0, getHeight());
 
                 x1 = (int) (x1 * zoom);
                 y1 = (int) (y1 * zoom);
@@ -172,10 +189,10 @@ public class Graficar extends JPanel {
         }
         // Dibujar la línea entre los nodos seleccionados
         if (nodoSeleccionado1 != null && nodoSeleccionado2 != null) {
-            int x1 = escalar(nodoSeleccionado1.getX(), -71.7, -71.1, 0, getWidth(), zoom);
-            int y1 = escalar(nodoSeleccionado1.getY(), -30.5, -29.9, 0, getHeight(), zoom);
-            int x2 = escalar(nodoSeleccionado2.getX(), -71.7, -71.1, 0, getWidth(), zoom);
-            int y2 = escalar(nodoSeleccionado2.getY(), -30.5, -29.9, 0, getHeight(), zoom);
+            int x1 = escalar(nodoSeleccionado1.getX(), xv, xv2, 0, getWidth(), zoom);
+            int y1 = escalar(nodoSeleccionado1.getY(), yv, yv2, 0, getHeight(), zoom);
+            int x2 = escalar(nodoSeleccionado2.getX(), xv, xv2, 0, getWidth(), zoom);
+            int y2 = escalar(nodoSeleccionado2.getY(), yv, yv2, 0, getHeight(), zoom);
 
             g2d.setColor(Color.RED); // Color de la línea
             g2d.drawLine(x1, y1, x2, y2);
@@ -195,10 +212,10 @@ public class Graficar extends JPanel {
             // Math.pow(nodo.getY() - mouseY, 2));
             // if (distancia < distanciaMasCercana) {
             // distanciaMasCercana = distancia;
-            if (escalarCoordenada(nodo.getX(), -71.7, -71.1, 0, getWidth()) - mouseX < 10
-                    && escalarCoordenada(nodo.getY(), -30.5, -29.9, 0, getHeight()) - mouseY < 10
-                    && escalarCoordenada(nodo.getX(), -71.7, -71.1, 0, getWidth()) - mouseX > 0
-                    && escalarCoordenada(nodo.getY(), -30.5, -29.9, 0, getHeight()) - mouseY > 0) {
+            if (escalarCoordenada(nodo.getX(), xv, xv2, 0, getWidth()) - mouseX < 10
+                    && escalarCoordenada(nodo.getY(), yv, yv2, 0, getHeight()) - mouseY < 10
+                    && escalarCoordenada(nodo.getX(), xv, xv2, 0, getWidth()) - mouseX > 0
+                    && escalarCoordenada(nodo.getY(), yv, yv2, 0, getHeight()) - mouseY > 0) {
                 // System.out.println(escalarCoordenada(nodo.getX(), -71.7, -71.1, 0,
                 // getWidth()) - mouseX);
                 // System.out.println(escalarCoordenada(nodo.getY(), -30.5, -29.9, 0,
@@ -259,8 +276,12 @@ public class Graficar extends JPanel {
 
             // Calcula la distancia en kilómetros
             double distancia = calcularDistanciaHaversine(latitudNodo1, longitudNodo1, latitudNodo2, longitudNodo2);
-
+            // double numRedondeado = Double.parseDouble(String.format("%.2f", distancia));
             // Actualiza el texto del JLabel con la distancia
+            xNodoUno.setText("Nodo Uno x: " + nodoSeleccionado1.getX());
+            yNodoUno.setText("Nodo Uno y: " + nodoSeleccionado1.getY());
+            xNodoDos.setText("Nodo Dos x: " + nodoSeleccionado2.getX());
+            yNodoDos.setText("Nodo Dos y: " + nodoSeleccionado2.getY());
             labelNodoUno.setText("Osmid Nodo Uno: " + nodoSeleccionado1.getId());
             labelNodoDos.setText("Osmid Nodo Dos: " + nodoSeleccionado2.getId());
             distanciaLabel.setText("Distancia entre nodos: " + distancia + " km");

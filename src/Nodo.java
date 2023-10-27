@@ -9,6 +9,7 @@ public class Nodo {
     private Color color = Color.RED;
     private int tamañoOriginal = 1;
     private boolean marcado = false;
+    private double xv, xv2, yv, yv2;
 
     public Nodo(String osmid, double x, double y, int street_Count) {
         this.osmid = osmid;
@@ -40,6 +41,38 @@ public class Nodo {
 
     public void setX(double x) {
         this.x = x;
+    }
+
+    public double getYv() {
+        return yv;
+    }
+
+    public void setYv(double yv) {
+        this.yv = yv;
+    }
+
+    public double getYv2() {
+        return yv2;
+    }
+
+    public void setYv2(double yv2) {
+        this.yv2 = yv2;
+    }
+
+    public double getXv() {
+        return xv;
+    }
+
+    public void setXv(double xv) {
+        this.xv = xv;
+    }
+
+    public double getXv2() {
+        return xv2;
+    }
+
+    public void setXv2(double xv2) {
+        this.xv2 = xv2;
     }
 
     public int getContCalle() {
@@ -81,8 +114,8 @@ public class Nodo {
 
     public void dibujar(Graphics g, int panelWidth, int panelHeight, double zoom) {
         g.setColor(color);
-        int scaledX = escalarCoordenada(x, -71.7, -71.1, 0, panelWidth);
-        int scaledY = escalarCoordenada(y, -30.5, -29.9, 0, panelHeight);
+        int scaledX = escalarCoordenada(x, xv, xv2, 0, panelWidth);
+        int scaledY = escalarCoordenada(y, yv, yv2, 0, panelHeight);
         scaledX = (int) (scaledX * zoom);
         scaledY = (int) (scaledY * zoom);
         g.fillOval(scaledX - 1, scaledY - 1, tamañoOriginal, tamañoOriginal);
