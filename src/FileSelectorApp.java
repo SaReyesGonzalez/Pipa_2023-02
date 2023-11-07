@@ -19,6 +19,7 @@ public class FileSelectorApp {
     private JFrame frame;
     private JButton openButton;
     private JButton Mostrar_Mapa;
+    private JProgressBar progressBar;
     private File selectedFile1;
     private File selectedFile2;
     private ArrayList<Edge> listaEdge = new ArrayList<>();
@@ -43,6 +44,7 @@ public class FileSelectorApp {
             }
         });
         Mostrar_Mapa = new JButton("Mostrar Mapa");
+        Mostrar_Mapa.setEnabled(false);
         frame.add(Mostrar_Mapa);
         Mostrar_Mapa.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -73,6 +75,11 @@ public class FileSelectorApp {
 
             }
         });
+
+        progressBar = new JProgressBar(0, 100);
+        progressBar.setStringPainted(true);
+        frame.add(progressBar);
+
         frame.setVisible(true);
 
     }
@@ -90,7 +97,7 @@ public class FileSelectorApp {
             if (selectedFiles.length == 2) {
                 selectedFile1 = selectedFiles[0];
                 selectedFile2 = selectedFiles[1];
-                openXMLViewerFrames();
+                loadXMLFilesInBackground();
 
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, selecciona exactamente 2 archivos XML.");
@@ -98,7 +105,31 @@ public class FileSelectorApp {
         }
     }
 
-    private void openXMLViewerFrames() {
+    private void loadXMLFilesInBackground() {
+        SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
+            @Override
+            protected Void doInBackground() {
+                try {
+                    // Cargar archivos XML aquí y notificar el progreso
+                    loadEdgesAndNodesFromXML(selectedFile1, selectedFile2);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                // Actualizar la interfaz gráfica después de cargar los archivos
+                Mostrar_Mapa.setEnabled(true);
+                progressBar.setValue(100);
+            }
+        };
+
+        worker.execute();
+    }
+
+    private void loadEdgesAndNodesFromXML(File file1, File file2) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         Document D_edges;
         Document D_nodes;
