@@ -5,23 +5,17 @@ public class Edge {
     private int k;
     private String osmid;
     private String nameStreet;
+    private String highway;
     private Nodo nodoFuente;
     private Nodo nodoDestino;
 
-    public Edge(String u, String v, int k, String osmid, String nameStreet, Nodo nodoFuente, Nodo nodoDestino) {
+    public Edge(String u, String v, int k, String osmid, String nameStreet, String highway) {
         this.u = u;
         this.v = v;
         this.k = k;
         this.osmid = osmid;
         this.nameStreet = nameStreet;
-    }
-
-    public String getOsmid() {
-        return osmid;
-    }
-
-    public void setOsmid(String osmid) {
-        this.osmid = osmid;
+        this.highway = highway;
     }
 
     public String getU() {
@@ -40,6 +34,22 @@ public class Edge {
         this.v = v;
     }
 
+    public int getK() {
+        return k;
+    }
+
+    public void setK(int k) {
+        this.k = k;
+    }
+
+    public String getOsmid() {
+        return osmid;
+    }
+
+    public void setOsmid(String osmid) {
+        this.osmid = osmid;
+    }
+
     public String getNameStreet() {
         return nameStreet;
     }
@@ -48,12 +58,12 @@ public class Edge {
         this.nameStreet = nameStreet;
     }
 
-    public int getK() {
-        return k;
+    public String getHighway() {
+        return highway;
     }
 
-    public void setK(int k) {
-        this.k = k;
+    public void setHighway(String highway) {
+        this.highway = highway;
     }
 
     public Nodo getNodoFuente() {

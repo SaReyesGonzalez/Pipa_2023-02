@@ -160,11 +160,17 @@ public class Graficar extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g;
 
+        g2d.setColor(Color.BLACK);
+        g2d.fillRect(0, 0, getWidth(), getHeight());
+
         g2d.setTransform(new AffineTransform());
 
         g2d.translate(panX, panY);
 
         for (Edge edge : edges) {
+
+            String highwayType = edge.getHighway();
+
             Nodo nodoFuente = edge.getNodoFuente();
             Nodo nodoDestino = edge.getNodoDestino();
             if (nodoFuente != null && nodoDestino != null) {
@@ -178,9 +184,34 @@ public class Graficar extends JPanel {
                 x2 = (int) (x2 * zoom);
                 y2 = (int) (y2 * zoom);
 
-                g2d.setColor(Color.BLACK);
-                g2d.drawLine(x1, y1, x2, y2);
-                g2d.setColor(Color.black);
+                if (highwayType.equals("motorway") || highwayType.equals("motorway_link")) {
+                    g2d.setColor(Color.RED);
+                    g2d.drawLine(x1, y1, x2, y2);
+
+                } else if (highwayType.equals("trunk") || highwayType.equals("trunk_link")) {
+                    g2d.setColor(Color.RED);
+                    g2d.drawLine(x1, y1, x2, y2);
+
+                } else if (highwayType.equals("primary") || highwayType.equals("primary_link")) {
+                    g2d.setColor(Color.BLUE);
+                    g2d.drawLine(x1, y1, x2, y2);
+                    
+                } else if (highwayType.equals("secondary") || highwayType.equals("secondary_link")) {
+                    g2d.setColor(Color.GREEN);
+                    g2d.drawLine(x1, y1, x2, y2);
+
+                } else if (highwayType.equals("tertiary") || highwayType.equals("tertiary_link")) {
+                    g2d.setColor(Color.CYAN);
+                    g2d.drawLine(x1, y1, x2, y2);
+
+                } else if (highwayType.equals("unclassified")) {
+                    g2d.setColor(Color.MAGENTA);
+                    g2d.drawLine(x1, y1, x2, y2);
+
+                } else {
+                    g2d.setColor(Color.WHITE);
+                    g2d.drawLine(x1, y1, x2, y2);
+                }
             }
         }
 

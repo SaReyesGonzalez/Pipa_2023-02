@@ -153,12 +153,13 @@ public class FileSelectorApp {
                     try {
                         String u = (edgeElement.getElementsByTagName("u").item(0).getTextContent());
                         String v = (edgeElement.getElementsByTagName("v").item(0).getTextContent());
+                        int k = Integer.parseInt(edgeElement.getElementsByTagName("k").item(0).getTextContent());
                         String osmid = (edgeElement.getElementsByTagName("osmid").item(0).getTextContent());
                         String name = edgeElement.getElementsByTagName("name").item(0).getTextContent();
-                        int k = Integer.parseInt(edgeElement.getElementsByTagName("k").item(0).getTextContent());
+                        String highway = edgeElement.getElementsByTagName("highway").item(0).getTextContent();
                         Nodo nodoFuente = nodosMap.get(u);
                         Nodo nodoDestino = nodosMap.get(v);
-                        Edge e = new Edge(u, v, k, osmid, name, nodoFuente, nodoDestino);
+                        Edge e = new Edge(u, v, k, osmid, name, highway);
 
                         listaEdge.add(e);
                     } catch (NumberFormatException e) {
