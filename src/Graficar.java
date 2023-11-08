@@ -184,37 +184,49 @@ public class Graficar extends JPanel {
                 x2 = (int) (x2 * zoom);
                 y2 = (int) (y2 * zoom);
 
-                if (highwayType.equals("motorway") || highwayType.equals("motorway_link")) {
-                    g2d.setColor(Color.RED);
-                    g2d.drawLine(x1, y1, x2, y2);
-
-                } else if (highwayType.equals("trunk") || highwayType.equals("trunk_link")) {
-                    g2d.setColor(Color.RED);
-                    g2d.drawLine(x1, y1, x2, y2);
-
-                } else if (highwayType.equals("primary") || highwayType.equals("primary_link")) {
-                    g2d.setColor(Color.BLUE);
-                    g2d.drawLine(x1, y1, x2, y2);
+                switch (highwayType) {
                     
-                } else if (highwayType.equals("secondary") || highwayType.equals("secondary_link")) {
-                    g2d.setColor(Color.GREEN);
-                    g2d.drawLine(x1, y1, x2, y2);
+                    case "motorway":
+                    case "motorway_link":
+                        g2d.setColor(Color.RED);
+                        break;
 
-                } else if (highwayType.equals("tertiary") || highwayType.equals("tertiary_link")) {
-                    g2d.setColor(Color.CYAN);
-                    g2d.drawLine(x1, y1, x2, y2);
+                    case "trunk":
+                    case "trunk_link":
+                        g2d.setColor(Color.RED);
+                        break;
 
-                } else if (highwayType.equals("unclassified")) {
-                    g2d.setColor(Color.MAGENTA);
-                    g2d.drawLine(x1, y1, x2, y2);
+                    case "primary":
+                    case "primary_link":
+                        g2d.setColor(Color.BLUE);
+                        break;
 
-                } else {
-                    g2d.setColor(Color.WHITE);
-                    g2d.drawLine(x1, y1, x2, y2);
+                    case "secondary":
+                    case "secondary_link":
+                        g2d.setColor(Color.GREEN);
+                        break;
+                    case "tertiary":
+                    case "tertiary_link":
+                        g2d.setColor(Color.MAGENTA);
+                        break;
+
+                    case "unclassified":
+                        g2d.setColor(Color.CYAN);
+                        break;
+
+                    case "residential":
+                        g2d.setColor(Color.YELLOW);
+                        break;
+
+                    default:
+                        g2d.setColor(Color.WHITE);
+                        break;
                 }
+                g2d.drawLine(x1, y1, x2, y2);
+                
             }
         }
-
+        
         for (Nodo nodo : nodos) {
             nodo.dibujar(g2d, getWidth(), getHeight(), zoom);
         }
