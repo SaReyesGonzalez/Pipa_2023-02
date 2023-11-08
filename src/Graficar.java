@@ -201,11 +201,15 @@ public class Graficar extends JPanel {
                     g2d.drawLine(x1, y1, x2, y2);
 
                 } else if (highwayType.equals("tertiary") || highwayType.equals("tertiary_link")) {
-                    g2d.setColor(Color.CYAN);
+                    g2d.setColor(Color.MAGENTA);
                     g2d.drawLine(x1, y1, x2, y2);
 
                 } else if (highwayType.equals("unclassified")) {
-                    g2d.setColor(Color.MAGENTA);
+                    g2d.setColor(Color.CYAN);
+                    g2d.drawLine(x1, y1, x2, y2);
+
+                } else if (highwayType.equals("residential")) {
+                    g2d.setColor(Color.YELLOW);
                     g2d.drawLine(x1, y1, x2, y2);
 
                 } else {
