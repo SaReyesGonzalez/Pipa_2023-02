@@ -7,7 +7,7 @@ public class Nodo {
     private double x;
     private int street_Count;
     private Color color = Color.RED;
-    private int tamañoOriginal = 1;
+    private int originalSize = 1;
     private boolean marcado = false;
     private double xv, xv2, yv, yv2;
 
@@ -100,16 +100,16 @@ public class Nodo {
 
         // Cambiar el tamaño del nodo cuando se marca
         if (marcado) {
-            tamañoOriginal += 10; // Aumentar el tamaño original (por ejemplo, x3)
+            originalSize += 10; // Aumentar el tamaño original (por ejemplo, x3)
         }
     }
 
-    public int getTamañoOriginal() {
-        return tamañoOriginal;
+    public int getOriginalSize() {
+        return originalSize;
     }
 
-    public void setTamañoOriginal(int tamañoOriginal) {
-        this.tamañoOriginal = tamañoOriginal;
+    public void setOriginalSize(int originalSize) {
+        this.originalSize = originalSize;
     }
 
     public void dibujar(Graphics g, int panelWidth, int panelHeight, double zoom) {
@@ -118,7 +118,7 @@ public class Nodo {
         int scaledY = escalarCoordenada(y, yv, yv2, 0, panelHeight);
         scaledX = (int) (scaledX * zoom);
         scaledY = (int) (scaledY * zoom);
-        g.fillOval(scaledX - 1, scaledY - 1, tamañoOriginal, tamañoOriginal);
+        g.fillOval(scaledX - 1, scaledY - 1, originalSize, originalSize);
         g.setColor(Color.BLACK);
     }
 
