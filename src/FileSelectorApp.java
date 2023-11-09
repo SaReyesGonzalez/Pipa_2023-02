@@ -19,7 +19,6 @@ public class FileSelectorApp {
     private JFrame frame;
     private JButton openButton;
     private JButton Mostrar_Mapa;
-    private JProgressBar progressBar;
     private File selectedFile1;
     private File selectedFile2;
     private ArrayList<Edge> listaEdge = new ArrayList<>();
@@ -76,9 +75,6 @@ public class FileSelectorApp {
             }
         });
 
-        progressBar = new JProgressBar(0, 100);
-        progressBar.setStringPainted(true);
-        frame.add(progressBar);
 
         frame.setVisible(true);
 
@@ -122,7 +118,6 @@ public class FileSelectorApp {
             protected void done() {
                 // Actualizar la interfaz gráfica después de cargar los archivos
                 Mostrar_Mapa.setEnabled(true);
-                progressBar.setValue(100);
             }
         };
 
@@ -203,19 +198,17 @@ public class FileSelectorApp {
                         } else if (yv2 < y) {
                             yv2 = y;
                         }
-                        for (Nodo nodo : listaNodo) {
-                            nodo.setXv(xv);
-                            nodo.setXv2(xv2);
-                            nodo.setYv(yv);
-                            nodo.setYv2(yv2);
-                        }
-                        // System.out.println("x: " + x);
-                        // System.out.println("y: " + y);
+                        
                     } catch (NumberFormatException e) {
 
                     }
                 }
-
+            }
+             for (Nodo nodo : listaNodo) {
+                    nodo.setXv(xv);
+                    nodo.setXv2(xv2);
+                    nodo.setYv(yv);
+                    nodo.setYv2(yv2);
             }
 
         } catch (Exception e) {
