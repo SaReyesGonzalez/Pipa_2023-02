@@ -36,6 +36,7 @@ public class Graficar extends JPanel {
         distanciaFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         distanciaFrame.setSize(300, 250);
         distanciaFrame.setLayout(new FlowLayout());
+        distanciaFrame.setLocationRelativeTo(null);
         labelNodoUno = new JLabel("Osmid Nodo Uno: ");
         labelNodoDos = new JLabel("Osmid Nodo Dos: ");
         xNodoUno = new JLabel("Nodo Uno x:");

@@ -85,8 +85,9 @@ public class FileSelectorApp {
 
                 // Crear el JFrame y configurarlo
                 JFrame frame = new JFrame("Dibujar Mapa");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                 frame.setSize(800, 600);
+                frame.setLocation(0, 0);
 
                 // Agregar el JScrollPane al contenido del JFrame
                 frame.getContentPane().add(scrollPane);
