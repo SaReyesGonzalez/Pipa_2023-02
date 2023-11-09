@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8'?>
+<data>
+  <row>
+    <osmid>1</osmid>
+    <y>0</y>
+    <x>0</x>
+    <street_count>2</street_count>
+    <highway/>
+    <geometry>POINT (-71.3897958 -30.1967332)</geometry>
+  </row>
+  <row>
+    <osmid>2</osmid>
+    <y>100</y>
+    <x>100</x>
+    <street_count>3</street_count>
+    <highway/>
+    <geometry>POINT (-71.4229862 -30.229273)</geometry>
+  </row>
+  <row>
+    <osmid>3</osmid>
+    <y>25</y>
+    <x>25</x>
+    <street_count>3</street_count>
+    <highway/>
+    <geometry>POINT (-71.4239994 -30.230072)</geometry>
+  </row>
+  <row>
+    <osmid>6</osmid>
+    <y>50</y>
+    <x>50</x>
+    <street_count>3</street_count>
+    <highway/>
+    <geometry>POINT (-71.2086377 -30.1217703)</geometry>
+  </row>
+  <row>
+    <osmid>5</osmid>
+    <y>25</y>
+    <x>50</x>
+    <street_count>3</street_count>
+    <highway/>
+    <geometry>POINT (-71.204533 -30.1204773)</geometry>
+  </row>
+  <row>
+    <osmid>4</osmid>
+    <y>50</y>
+    <x>25</x>
+    <street_count>3</street_count>
+    <highway/>
+    <geometry>POINT (-71.2197897 -30.1275565)</geometry>
+  </row>
+  <row>
+    <osmid>8</osmid>
+    <y>30</y>
+    <x>30</x>
+    <street_count>3</street_count>
+    <highway/>
+    <geometry>POINT (-71.2165198 -30.1251048)</geometry>
+  </row>
+  <row>
+    <osmid>9</osmid>
+    <y>45</y>
+    <x>45</x>
+    <street_count>3</street_count>
+    <highway/>
+    <geometry>POINT (-71.1290409 -30.0954644)</geometry>
+  </row>
+  <row>
+    <osmid>10</osmid>
+    <y>45</y>
+    <x>30</x>
+    <street_count>4</street_count>
+    <highway/>
+    <geometry>POINT (-71.2618692 -30.2067579)</geometry>
+  </row>
+  <row>
+    <osmid>7</osmid>
+    <y>30</y>
+    <x>45</x>
+    <street_count>3</street_count>
+    <highway/>
+    <geometry>POINT (-71.4200785 -30.2294681)</geometry>
+  </row>
+</data>

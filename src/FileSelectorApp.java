@@ -16,16 +16,16 @@ import org.w3c.dom.*;
 
 public class FileSelectorApp {
     static Map<String, Nodo> nodosMap = new HashMap<>();
-    private JFrame frame;
-    private JButton openButton;
-    private JButton Mostrar_Mapa;
-    private JProgressBar progressBar;
-    private File selectedFile1;
-    private File selectedFile2;
-    private ArrayList<Edge> listaEdge = new ArrayList<>();
-    private ArrayList<Nodo> listaNodo = new ArrayList<>();
-    private JPanel contentPane;
-    private double xv = 0, xv2 = 0, yv = 0, yv2 = 0;
+    public JFrame frame;
+    public JButton openButton;
+    public JButton Mostrar_Mapa;
+    public JProgressBar progressBar;
+    public File selectedFile1;
+    public File selectedFile2;
+    public ArrayList<Edge> listaEdge = new ArrayList<>();
+    public ArrayList<Nodo> listaNodo = new ArrayList<>();
+    public JPanel contentPane;
+    public double xv = 0, xv2 = 0, yv = 0, yv2 = 0;
 
     public FileSelectorApp() {
         frame = new JFrame("Seleccionar 2 archivos XML");
@@ -35,6 +35,7 @@ public class FileSelectorApp {
         frame.setLocationRelativeTo(null);
 
         openButton = new JButton("Abrir archivos XML");
+
         frame.add(openButton);
 
         openButton.addActionListener(new ActionListener() {
@@ -90,6 +91,7 @@ public class FileSelectorApp {
         fileChooser.setFileFilter(filter);
         fileChooser.setMultiSelectionEnabled(true);
 
+
         int returnValue = fileChooser.showOpenDialog(null);
 
         if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -105,7 +107,7 @@ public class FileSelectorApp {
         }
     }
 
-    private void loadXMLFilesInBackground() {
+    public void loadXMLFilesInBackground() {
         SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
             @Override
             protected Void doInBackground() {
@@ -229,4 +231,6 @@ public class FileSelectorApp {
         }
         return nodosMap;
     }
+
+
 }

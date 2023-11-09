@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<edges>
+    <edge>
+        <u>1</u>
+        <v>2</v>
+        <k>0</k>
+        <osmid>703233214</osmid>
+        <name>Ruta D-410</name>
+    </edge>
+    <edge>
+        <u>3</u>
+        <v>4</v>
+        <k>0</k>
+        <osmid>82332202</osmid>
+        <name>Ruta D-410</name>
+    </edge>
+    <edge>
+        <u>5</u>
+        <v>6</v>
+        <k>0</k>
+        <osmid>208355718</osmid>
+        <name>Ruta D-430</name>
+    </edge>
+    <edge>
+        <u>7</u>
+        <v>8</v>
+        <k>0</k>
+        <osmid>1111156747</osmid>
+        <name>Tongoy - Guanaqueros</name>
+    </edge>
+    <edge>
+        <u>9</u>
+        <v>10</v>
+        <k>0</k>
+        <osmid>1111156750</osmid>
+        <name>Ruta D-430</name>
+    </edge>
+</edges>
