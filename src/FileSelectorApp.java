@@ -19,6 +19,7 @@ public class FileSelectorApp {
     private JFrame frame;
     private JButton openButton;
     private JButton Mostrar_Mapa;
+    private JButton cancelar;
     private File selectedFile1;
     private File selectedFile2;
     private ArrayList<Edge> listaEdge = new ArrayList<>();
@@ -29,22 +30,41 @@ public class FileSelectorApp {
     public FileSelectorApp() {
         frame = new JFrame("Seleccionar 2 archivos XML");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 150);
-        frame.setLayout(new FlowLayout());
+        frame.setSize(400, 200);
+        frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(null);
 
-        openButton = new JButton("Abrir archivos XML");
-        frame.add(openButton);
+        // Crea un JTabbedPane para contener las pestañas
+        JTabbedPane tabbedPane = new JTabbedPane();
 
+        // Crea pestaña para la selección de archivos XML
+        JPanel fileSelectionPanel = new JPanel();
+        fileSelectionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        openButton = new JButton("Abrir archivos XML");
+        fileSelectionPanel.add(openButton);
+        Mostrar_Mapa = new JButton("Mostrar Mapa");
+        Mostrar_Mapa.setEnabled(false);
+        fileSelectionPanel.add(Mostrar_Mapa);
+        cancelar = new JButton("Cancelar Carga");
+        fileSelectionPanel.add(cancelar);
+        tabbedPane.addTab("Selección de Archivos XML", fileSelectionPanel);
+
+        // Crea pestaña para mostrar el mapa
+        JPanel mapDisplayPanel = new JPanel();
+        mapDisplayPanel.setLayout(new BorderLayout());
+
+        
+        tabbedPane.addTab("Ciudades Provider", mapDisplayPanel);
+
+        // Agrega el JTabbedPane al JFrame
+        frame.add(tabbedPane, BorderLayout.CENTER);
         openButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 openXMLFiles();
 
             }
         });
-        Mostrar_Mapa = new JButton("Mostrar Mapa");
-        Mostrar_Mapa.setEnabled(false);
-        frame.add(Mostrar_Mapa);
+
         Mostrar_Mapa.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Map<String, Nodo> nodosMap = crearDiccionarioNodos(listaNodo);
@@ -74,10 +94,7 @@ public class FileSelectorApp {
 
             }
         });
-
-
         frame.setVisible(true);
-
     }
 
     private void openXMLFiles() {
@@ -198,9 +215,7 @@ public class FileSelectorApp {
                         } else if (yv2 < y) {
                             yv2 = y;
                         }
-                        
                     } catch (NumberFormatException e) {
-
                     }
                 }
             }
