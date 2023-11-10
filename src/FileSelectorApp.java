@@ -107,7 +107,7 @@ public class FileSelectorApp {
         }
     }
 
-    public void loadXMLFilesInBackground() {
+    public SwingWorker<Void, Integer> loadXMLFilesInBackground() {
         SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
             @Override
             protected Void doInBackground() {
@@ -127,8 +127,9 @@ public class FileSelectorApp {
                 progressBar.setValue(100);
             }
         };
-
         worker.execute();
+
+        return worker;
     }
 
     private void loadEdgesAndNodesFromXML(File file1, File file2) {
