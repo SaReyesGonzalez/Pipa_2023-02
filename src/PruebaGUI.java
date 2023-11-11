@@ -28,14 +28,21 @@ public class PruebaGUI {
 
     }
 
+
     @After
-    public void tearDown() {
-        // Cierra la interfaz gráfica después de la prueba
+    public void close() {
     }
-
     @Test
-    public void test() {
+    public void testObserverVentana() {
 
+        fileSelectorApp.Mostrar_Mapa.doClick();
+        Cliping.instalarObservers(fileSelectorApp);
+        fileSelectorApp.Mostrar_Mapa.doClick();
+        fileSelectorApp.Mostrar_Mapa.doClick();
+        fileSelectorApp.Mostrar_Mapa.doClick();
+        fileSelectorApp.Mostrar_Mapa.doClick();
+        int[] numeros = Cliping.extractDataVentana();
+        assert numeros.length == 4;
     }
 
     @Test

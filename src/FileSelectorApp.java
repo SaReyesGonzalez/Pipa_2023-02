@@ -3,9 +3,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -26,6 +26,7 @@ public class FileSelectorApp {
     public ArrayList<Nodo> listaNodo = new ArrayList<>();
     public JPanel contentPane;
     public double xv = 0, xv2 = 0, yv = 0, yv2 = 0;
+    public Graficar graficarPanel;
 
     public FileSelectorApp() {
         frame = new JFrame("Seleccionar 2 archivos XML");
@@ -46,6 +47,23 @@ public class FileSelectorApp {
         });
         Mostrar_Mapa = new JButton("Mostrar Mapa");
         Mostrar_Mapa.setEnabled(false);
+
+
+        class SetGraficarCommand {
+
+            private final FileSelectorApp fileSelector;
+
+            public SetGraficarCommand(FileSelectorApp fileSelectorApp) {
+                this.fileSelector = fileSelectorApp;
+            }
+            public Graficar execute() {
+                Graficar graficar = new Graficar(listaNodo, listaEdge, xv, xv2, yv, yv2);
+                fileSelector.graficarPanel = graficar;
+                return graficar;
+            }
+        }
+
+        SetGraficarCommand commandSetGraficar = new SetGraficarCommand(this);
         frame.add(Mostrar_Mapa);
         Mostrar_Mapa.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -56,10 +74,10 @@ public class FileSelectorApp {
                     edge.setNodoFuente(nodoFuente);
                     edge.setNodoDestino(nodoDestino);
                 }
-                Graficar panel = new Graficar(listaNodo, listaEdge, xv, xv2, yv, yv2);
+                Graficar graficar = commandSetGraficar.execute();
 
-                // Crear un JScrollPane que contenga el panel App
-                JScrollPane scrollPane = new JScrollPane(panel);
+                // Crear un JScrollPane que contenga el graficar App
+                JScrollPane scrollPane = new JScrollPane(graficar);
 
                 // Configurar el comportamiento de las barras de desplazamiento
                 scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -76,7 +94,6 @@ public class FileSelectorApp {
 
             }
         });
-
         progressBar = new JProgressBar(0, 100);
         progressBar.setStringPainted(true);
         frame.add(progressBar);
