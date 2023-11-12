@@ -80,6 +80,16 @@ public class PruebaGUI {
 
 
     }
+
+    @Test
+    public void TestClipingWithoutTheSizeOfWindows() {
+        Cliping.instalarObservers(fileSelectorApp);
+        fileSelectorApp.Mostrar_Mapa.doClick();
+        fileSelectorApp.Mostrar_Mapa.doClick();
+        while (true) {
+
+        }
+    }
 }
 
 

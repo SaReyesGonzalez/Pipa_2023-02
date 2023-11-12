@@ -23,8 +23,8 @@ public class Graficar extends JPanel {
     private double zoom = 1.0;
     private int prevMouseX;
     private int prevMouseY;
-    private int panX;
-    private int panY;
+    public int panX;
+    public int panY;
     private boolean panning = false;
     private Nodo nodoMarcado = null;
     private Nodo nodoSeleccionado1 = null;
@@ -99,6 +99,8 @@ public class Graficar extends JPanel {
                     panX += deltaX;
                     panY += deltaY;
 
+                    (new ObserverDataMouse()).trigger(deltaX, deltaY);
+
                     prevMouseX = e.getX();
                     prevMouseY = e.getY();
 
@@ -164,6 +166,10 @@ public class Graficar extends JPanel {
 
         g2d.translate(panX, panY);
 
+        Cliping.cliping(g);
+
+
+
         for (Edge edge : edges) {
             Nodo nodoFuente = edge.getNodoFuente();
             Nodo nodoDestino = edge.getNodoDestino();
@@ -186,7 +192,10 @@ public class Graficar extends JPanel {
 
         for (Nodo nodo : nodos) {
             nodo.dibujar(g2d, getWidth(), getHeight(), zoom);
+
         }
+
+
         // Dibujar la línea entre los nodos seleccionados
         if (nodoSeleccionado1 != null && nodoSeleccionado2 != null) {
             int x1 = escalar(nodoSeleccionado1.getX(), xv, xv2, 0, getWidth(), zoom);
