@@ -4,8 +4,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-
-                new FileSelectorApp();
+                Cliping.instalarObservers(new FileSelectorApp());
             }
         });
     }

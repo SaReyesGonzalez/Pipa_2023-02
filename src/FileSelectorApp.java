@@ -16,16 +16,17 @@ import org.w3c.dom.*;
 
 public class FileSelectorApp {
     static Map<String, Nodo> nodosMap = new HashMap<>();
-    private JFrame frame;
-    private JButton openButton;
-    private JButton Mostrar_Mapa;
-    private JButton cancelar;
-    private File selectedFile1;
-    private File selectedFile2;
-    private ArrayList<Edge> listaEdge = new ArrayList<>();
-    private ArrayList<Nodo> listaNodo = new ArrayList<>();
-    private JPanel contentPane;
-    private double xv = 0, xv2 = 0, yv = 0, yv2 = 0;
+    public JFrame frame;
+    public JButton openButton;
+    public JButton Mostrar_Mapa;
+    public JButton cancelar;
+    public File selectedFile1;
+    public File selectedFile2;
+    public ArrayList<Edge> listaEdge = new ArrayList<>();
+    public ArrayList<Nodo> listaNodo = new ArrayList<>();
+    public JPanel contentPane;
+    public double xv = 0, xv2 = 0, yv = 0, yv2 = 0;
+    public Graficar graficarPanel;
 
     public FileSelectorApp() {
         frame = new JFrame("Seleccionar 2 archivos XML");
@@ -56,6 +57,22 @@ public class FileSelectorApp {
         
         tabbedPane.addTab("Ciudades Provider", mapDisplayPanel);
 
+
+        class SetGraficarCommand {
+
+            private final FileSelectorApp fileSelector;
+
+            public SetGraficarCommand(FileSelectorApp fileSelectorApp) {
+                this.fileSelector = fileSelectorApp;
+            }
+            public Graficar execute() {
+                Graficar graficar = new Graficar(listaNodo, listaEdge, xv, xv2, yv, yv2);
+                fileSelector.graficarPanel = graficar;
+                return graficar;
+            }
+        }
+        
+
         // Agrega el JTabbedPane al JFrame
         frame.add(tabbedPane, BorderLayout.CENTER);
         openButton.addActionListener(new ActionListener() {
@@ -64,7 +81,8 @@ public class FileSelectorApp {
 
             }
         });
-
+        
+        SetGraficarCommand commandSetGraficar = new SetGraficarCommand(this);
         Mostrar_Mapa.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Map<String, Nodo> nodosMap = crearDiccionarioNodos(listaNodo);
@@ -74,10 +92,10 @@ public class FileSelectorApp {
                     edge.setNodoFuente(nodoFuente);
                     edge.setNodoDestino(nodoDestino);
                 }
-                Graficar panel = new Graficar(listaNodo, listaEdge, xv, xv2, yv, yv2);
+                Graficar graficar = commandSetGraficar.execute();
 
-                // Crear un JScrollPane que contenga el panel App
-                JScrollPane scrollPane = new JScrollPane(panel);
+                // Crear un JScrollPane que contenga el graficar App
+                JScrollPane scrollPane = new JScrollPane(graficar);
 
                 // Configurar el comportamiento de las barras de desplazamiento
                 scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
