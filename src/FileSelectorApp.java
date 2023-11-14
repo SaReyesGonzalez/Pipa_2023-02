@@ -40,21 +40,25 @@ public class FileSelectorApp {
 
         // Crea pestaña para la selección de archivos XML
         JPanel fileSelectionPanel = new JPanel();
+
         fileSelectionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        
         openButton = new JButton("Abrir archivos XML");
-        fileSelectionPanel.add(openButton);
-        Mostrar_Mapa = new JButton("Mostrar Mapa");
-        Mostrar_Mapa.setEnabled(false);
-        fileSelectionPanel.add(Mostrar_Mapa);
         cancelar = new JButton("Cancelar Carga");
+        Mostrar_Mapa = new JButton("Mostrar Mapa");
+
+        Mostrar_Mapa.setEnabled(false);
+        
+        fileSelectionPanel.add(Mostrar_Mapa);
         fileSelectionPanel.add(cancelar);
+        fileSelectionPanel.add(openButton);
+        
         tabbedPane.addTab("Selección de Archivos XML", fileSelectionPanel);
 
         // Crea pestaña para mostrar el mapa
         JPanel mapDisplayPanel = new JPanel();
         mapDisplayPanel.setLayout(new BorderLayout());
 
-        
         tabbedPane.addTab("Ciudades Provider", mapDisplayPanel);
 
 
