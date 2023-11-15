@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,9 +48,9 @@ public class FileSelectorApp {
 
         Mostrar_Mapa.setEnabled(false);
         
+        fileSelectionPanel.add(openButton);
         fileSelectionPanel.add(Mostrar_Mapa);
         fileSelectionPanel.add(cancelar);
-        fileSelectionPanel.add(openButton);
         
         tabbedPane.addTab("Selección de Archivos XML", fileSelectionPanel);
 
@@ -87,15 +86,20 @@ public class FileSelectorApp {
         });
         
         SetGraficarCommand commandSetGraficar = new SetGraficarCommand(this);
+
         Mostrar_Mapa.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
                 Map<String, Nodo> nodosMap = crearDiccionarioNodos(listaNodo);
-                for (Edge edge : listaEdge) {
+
+                for (Edge edge : listaEdge) 
+                {
                     Nodo nodoFuente = nodosMap.get(edge.getU());
                     Nodo nodoDestino = nodosMap.get(edge.getV());
                     edge.setNodoFuente(nodoFuente);
                     edge.setNodoDestino(nodoDestino);
                 }
+                
                 Graficar graficar = commandSetGraficar.execute();
 
                 // Crear un JScrollPane que contenga el graficar App
@@ -117,6 +121,7 @@ public class FileSelectorApp {
 
             }
         });
+        
         frame.setVisible(true);
     }
 
@@ -185,6 +190,7 @@ public class FileSelectorApp {
 
                 if (edgeNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element edgeElement = (Element) edgeNode;
+                    
                     try {
                         String u = (edgeElement.getElementsByTagName("u").item(0).getTextContent());
                         String v = (edgeElement.getElementsByTagName("v").item(0).getTextContent());
@@ -192,8 +198,7 @@ public class FileSelectorApp {
                         String osmid = (edgeElement.getElementsByTagName("osmid").item(0).getTextContent());
                         String name = edgeElement.getElementsByTagName("name").item(0).getTextContent();
                         String highway = edgeElement.getElementsByTagName("highway").item(0).getTextContent();
-                        Nodo nodoFuente = nodosMap.get(u);
-                        Nodo nodoDestino = nodosMap.get(v);
+                        
                         Edge e = new Edge(u, v, k, osmid, name, highway);
 
                         listaEdge.add(e);

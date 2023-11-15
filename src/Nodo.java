@@ -16,7 +16,6 @@ public class Nodo {
         this.y = y;
         this.x = x;
         this.street_Count = street_Count;
-
     }
 
     public String getId() {

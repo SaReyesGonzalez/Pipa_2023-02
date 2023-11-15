@@ -17,7 +17,6 @@ class ObserverListaEdge {
 
 class ObserverVentana {
 
-
     public static FileSelectorApp fileSelectorApp;
     public int[] ventanaWidthHeightCenterXY = new int[4];
     public void trigger() {
@@ -41,9 +40,6 @@ class ObserverDataMouse {
     public static FileSelectorApp fileSelectorApp;
     private static int x = 20;
     private static int y = 20;
-
-    private boolean firstSuscribe = true;
-
 
     public int[] suscribe() {
 
