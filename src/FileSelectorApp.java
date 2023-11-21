@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.List;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,6 +14,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.*;
 
 public class FileSelectorApp {
+
+    
+    private CiudadesProvider ciudadesProvider;
+    //parte ciudades provider
     static Map<String, Nodo> nodosMap = new HashMap<>();
     public JFrame frame;
     public JButton openButton;
@@ -54,9 +58,25 @@ public class FileSelectorApp {
         
         tabbedPane.addTab("Selección de Archivos XML", fileSelectionPanel);
 
+        //parte ciudad provider
+        ciudadesProvider = CiudadesProvider.instance();
+
         // Crea pestaña para mostrar el mapa
         JPanel mapDisplayPanel = new JPanel();
         mapDisplayPanel.setLayout(new BorderLayout());
+
+        tabbedPane.addTab("Ciudades Provider", mapDisplayPanel);
+
+        List<String> ciudadesList;
+        try{
+            ciudadesList = ciudadesProvider.list();
+        }catch(Exception e){
+            ciudadesList = new ArrayList<>();
+            e.printStackTrace();
+        }
+
+        JComboBox<String> ciudadDropdown = new JComboBox<>(ciudadesList.toArray(new String[0]));
+        mapDisplayPanel.add(ciudadDropdown, BorderLayout.NORTH);
 
         tabbedPane.addTab("Ciudades Provider", mapDisplayPanel);
 
