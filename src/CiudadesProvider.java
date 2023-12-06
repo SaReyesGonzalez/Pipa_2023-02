@@ -1,3 +1,6 @@
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,9 +10,6 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * Esta clase se encarga de listar y descargar archivos de datos NODE y EDGE
@@ -23,7 +23,6 @@ import org.json.JSONObject;
  * 
  * y agregarlo a las "biblotecas referenciadas" en su proyecto.
  * 
- * @see https://github.com/stleary/JSON-java
  */
 
 public class CiudadesProvider

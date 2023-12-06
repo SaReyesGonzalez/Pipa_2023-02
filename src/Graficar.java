@@ -29,6 +29,27 @@ public class Graficar extends JPanel {
     private Nodo nodoSeleccionado2 = null;
     private double xv, xv2, yv, yv2;
 
+    private static class ClipingStatic {
+        private static int x = 20, y = 20, width = 780, height = 480;
+
+        public static void cliping(Graphics g) {
+
+            g.setColor(Color.GREEN);
+            g.drawRect(x, y, width, height);
+            g.setClip(x, y, width, height);
+            g.setColor(Color.GREEN);
+        }
+        public static void set(int deltaX, int deltaY) {
+            x -= deltaX;
+            y -= deltaY;
+        }
+
+        public static void setCenterPan(int panX, int panY) {
+            x =- panX;
+            y =- panY;
+        }
+    }
+
     public Graficar(List<Nodo> nodos, List<Edge> edges, double xv, double xv2, double yv, double yv2) {
         
         distanciaFrame = new JFrame("Distancia entre Nodos");
@@ -62,6 +83,7 @@ public class Graficar extends JPanel {
         this.xv2 = xv2;
         this.yv = yv;
         this.yv2 = yv2;
+
 
         addMouseListener(new MouseAdapter() {
 
@@ -129,7 +151,12 @@ public class Graficar extends JPanel {
                     int deltaY = e.getY() - prevMouseY;
                     panX += deltaX;
                     panY += deltaY;
-                    (new ObserverDataMouse()).trigger(deltaX, deltaY);
+
+
+
+                    ClipingStatic.set(deltaX, deltaY);
+
+
                     prevMouseX = e.getX();
                     prevMouseY = e.getY();
                     repaint();
@@ -147,26 +174,40 @@ public class Graficar extends JPanel {
                 if (notches < 0) {
                     // Zoom in
                     setZoom(getZoom() * 1.1, zoomCenterX, zoomCenterY);
+
                 } else {
                     // Zoom out
                     setZoom(getZoom() / 1.1, zoomCenterX, zoomCenterY);
                 }
+
                 repaint();
             }
         });
-    
+
+        addMouseWheelListener(new MouseAdapter() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+            }
+        });
+
+
     }
+
+
 
     public void setZoom(double newZoom, int zoomCenterX, int zoomCenterY) 
     {
         // Calcular el desplazamiento de la posición del ratón después del zoom
         double offsetX = (zoomCenterX - panX) / zoom;
         double offsetY = (zoomCenterY - panY) / zoom;
+
         // Actualizar el nivel de zoom
         this.zoom = newZoom;
         // Ajustar el desplazamiento según el nuevo nivel de zoom
         panX = zoomCenterX - (int) (offsetX * newZoom);
         panY = zoomCenterY - (int) (offsetY * newZoom);
+
+        ClipingStatic.setCenterPan(panX, panY);
         repaint();
     }
 
@@ -181,6 +222,7 @@ public class Graficar extends JPanel {
                 / (rangoMaxEntrada - rangoMinEntrada) + rangoMinSalida);
     }
 
+
     @Override
     protected void paintComponent(Graphics g) {
         
@@ -191,9 +233,9 @@ public class Graficar extends JPanel {
         g2d.fillRect(0, 0, getWidth(), getHeight());
         g2d.setTransform(new AffineTransform());
         g2d.translate(panX, panY);
-        
-        Cliping.cliping(g);
-        
+
+        ClipingStatic.cliping(g);
+
         for (Edge edge : edges) {
             
             String highwayType = edge.getHighway();

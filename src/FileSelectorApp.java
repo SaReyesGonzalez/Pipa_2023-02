@@ -160,6 +160,10 @@ public class FileSelectorApp {
                 frame.setLocation(0, 0);
                 // Agregar el JScrollPane al contenido del JFrame
                 frame.getContentPane().add(scrollPane);
+
+
+
+
                 frame.setVisible(true);
 
                 // Agrega un WindowListener para reiniciar todo cuando se cierre la ventana de graficar
